@@ -45,11 +45,22 @@ class InceptionResNetV2Extractor:
 
 
 # input filename, output features
-def get_feature_from_img(filepath):
-    feature_extractor = InceptionResNetV2Extractor()
-    image_batches = load_img_from_file(filepath)
-    feature = feature_extractor.extract(image_batches)
-    return feature
+def get_feature_from_img_wrapper():
+    counter = [0]
+    feature_extractors = []
+    print("feature extractor got.")
+
+    def inner_get_features(filepath):
+        if len(feature_extractors) == 0:
+            print("load a model.")
+            feature_extractors.append(InceptionResNetV2Extractor())
+        image_batches = load_img_from_file(filepath)
+        feature = feature_extractors[0].extract(image_batches)
+        counter[0] += 1
+        if counter[0] % 2 == 0:
+            print("extracted:%d" % counter[0])
+        return feature
+    return inner_get_features
 
 
 # return a dict:{filename: label(+1 == outlier, -1 == inlier)}
@@ -68,6 +79,7 @@ def get_labels():
 def get_features(renew=False):
     train_feature_dict = {}
     test_feature_dict = {}
+    get_feature_from_img = get_feature_from_img_wrapper()
     if "train_feature.pkl" not in os.listdir(DATA_FEATURES_EXTRACTED) or renew:
         for filename in os.listdir(DATA_DIR_inlier):
             if ".jpg" in filename:
