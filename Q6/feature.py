@@ -127,5 +127,7 @@ if __name__ == "__main__":
 
     for vm in test_video_managers:
         vm.extract_features()
+    pkl.dump(train_video_managers, open("train_vms.pkl", "wb"))
+    pkl.dump(test_video_managers, open("test_vms.pkl", "wb"))
 
 
