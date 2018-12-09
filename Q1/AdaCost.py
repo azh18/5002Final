@@ -2,8 +2,8 @@
 import numpy as np
 from sklearn.ensemble import AdaBoostClassifier
 
-outlier_weight_reduce_factor = 0.75
-outlier_weight_increase_factor = 1.25
+outlier_weight_reduce_factor = 0.08
+outlier_weight_increase_factor = 8
 
 
 class AdaCostClassifier(AdaBoostClassifier):
@@ -67,9 +67,9 @@ class AdaCostClassifier(AdaBoostClassifier):
         res = []
         for i in zip(y, y_hat):
             # 1 = outlier, -1 = inlier
-            if i[0] == i[1] and i[0] == 1:
+            if i[0] == i[1] and i[1] == 1:
                 res.append(outlier_weight_reduce_factor)   # outlier -> weight reduce slower
-            elif i[0] == i[1] and i[0] == -1:
+            elif i[0] == i[1] and i[1] == -1:
                 res.append(1) # inlier -> weight reduce normal
             elif i[0] == 1 and i[1] == -1:
                 res.append(outlier_weight_increase_factor)  # outlier -> weight increase faster

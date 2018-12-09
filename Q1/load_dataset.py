@@ -94,7 +94,7 @@ def get_features(renew=False):
         for filename in os.listdir(DATA_DIR_test):
             if ".jpg" in filename:
                 test_feature_dict[filename] = get_feature_from_img(DATA_DIR_test + filename)
-        pkl.dump(train_feature_dict, open(DATA_FEATURES_EXTRACTED + "test_feature.pkl", "wb"))
+        pkl.dump(test_feature_dict, open(DATA_FEATURES_EXTRACTED + "test_feature.pkl", "wb"))
     else:
         test_feature_dict = pkl.load(open(DATA_FEATURES_EXTRACTED + "test_feature.pkl", "rb"))
     return train_feature_dict, test_feature_dict
