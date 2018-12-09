@@ -109,7 +109,7 @@ class VideoDataManager:
 
 if __name__ == "__main__":
     label_dict = {}
-    for line in open("tarin_tag.txt"):
+    for line in open("./Data_Q6/tarin_tag.txt"):
         label_dict[line.split(",")[0]] = int(line.split(",")[1])
     train_video_managers = []
     test_video_managers = []

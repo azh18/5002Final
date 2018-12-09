@@ -18,7 +18,8 @@ def get_l2_SSE(v1, v2):
 if __name__ == "__main__":
     data_df = np.array(pd.read_csv(DATA_DIR + "Q4_Data.csv"))
     n_data = data_df.shape[0]
-    centroids = [data_df[np.random.randint(0, n_data)] for i in range(n_centroid)]
+    centroids = [np.array([0, 0, 0, 0, 0, 0]), np.array([1, 1, 1, 1, 1, 1])]
+    # centroids = [data_df[np.random.randint(0, n_data)] for i in range(n_centroid)]
 
     iter_cnt = 0
     for iter_idx in range(max_iter):
@@ -48,6 +49,7 @@ if __name__ == "__main__":
             dists.append(get_l2_SSE(data_df[p_idx], centroids[labels[p_idx]]))
         SSE_p2c = np.sum(dists)
         if iter_idx < 2:
+            print("Centers:", new_centroids)
             print("SSE:", SSE_p2c)
 
         # check stop criteria
