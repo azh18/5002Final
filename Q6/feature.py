@@ -57,6 +57,9 @@ def get_feature_from_img_wrapper():
     return inner_get_features
 
 
+feature_extract_func = get_feature_from_img_wrapper()
+
+
 # extract features using VGG16 network
 class InceptionResNetV2Extractor:
     def __init__(self):
@@ -92,7 +95,8 @@ class VideoDataManager:
 
     # generate snapshot for video, require ffmpeg under current floder
     def generate_pics(self):
-        os.system("ffmpeg -ss 0 -i %s -y -f image2 -r 0.5 -s 299x299 %s%s-03d.jpg" % (self.dir + self.filename, PIC_DIR, self.fileid))
+        cmd = "ffmpeg -ss 0 -i %s -y -f image2 -r 0.2 -s 299x299 %s%s-%%03d.jpg" % (self.dir + self.filename, PIC_DIR, self.fileid)
+        os.system(cmd)
         slot_cnt = 0
         for f in os.listdir(self.dir):
             if self.fileid in f:
@@ -100,9 +104,8 @@ class VideoDataManager:
         self.n_time_slots = slot_cnt
 
     def extract_features(self):
-        feature_extract_func = get_feature_from_img_wrapper()
         for i in range(self.n_time_slots):
-            fig_path = PIC_DIR + "%s-%03d.jpg" % (self.fileid, i)
+            fig_path = PIC_DIR + "%s-%03d.jpg" % (self.fileid, i+1)
             high_dim_features = feature_extract_func(fig_path)
             self.feature_vectors.append(high_dim_features)
 
